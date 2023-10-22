@@ -1,0 +1,23 @@
+local checkpoints = game.Workspace.Checkpoints
+local HighstStage = game.Players.LocalPlayer.leaderstats.Stage
+local Rebirths = game.Players.LocalPlayer.leaderstats.Rebirths
+local NumbChildren = checkpoints:GetChildren()
+
+local RebirthsWanted = 10
+
+for i = Rebirths.Value, RebirthsWanted - 1, 1 do
+    local HRP = game.Players.LocalPlayer.Character.HumanoidRootPart 
+
+    for i = HighstStage.Value, #NumbChildren, 1 do
+        local x = checkpoints:FindFirstChild(tostring(i))
+        print("Doing: " .. x.Name)
+        local savepos = x.CFrame
+        x.CFrame = HRP.CFrame
+        repeat wait() until HighstStage.Value >= i
+        x.CFrame = savepos
+
+    end
+    wait(0.1)
+    game:GetService("ReplicatedStorage"):WaitForChild("Signals"):WaitForChild("Rebirth"):FireServer()
+    wait(0.5)
+end
