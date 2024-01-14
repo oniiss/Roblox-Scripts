@@ -1,0 +1,108 @@
+if game.Players.LocalPlayer.PlayerGui:FindFirstChild("OnisCmds") then
+    game.Players.LocalPlayer.PlayerGui.OnisCmds:Destroy()
+    wait(0.3)
+end
+
+-- Instances:
+
+local OnisCmds = Instance.new("ScreenGui")
+local Frame = Instance.new("Frame")
+local Error = Instance.new("TextLabel")
+local Credits = Instance.new("TextLabel")
+local Input = Instance.new("TextBox")
+local Success = Instance.new("TextLabel")
+local Loading = Instance.new("TextLabel")
+
+--Properties:
+
+OnisCmds.Name = "OnisCmds"
+OnisCmds.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+OnisCmds.IgnoreGuiInset = true
+OnisCmds.ResetOnSpawn = false
+
+Frame.Parent = OnisCmds
+Frame.AnchorPoint = Vector2.new(0.5, 0.5)
+Frame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+Frame.BackgroundTransparency = 0.500
+Frame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+Frame.BorderSizePixel = 0
+Frame.Position = UDim2.new(0.5, 0, 0.045, 0)
+Frame.Size = UDim2.new(0.80, 0, 0.0786695555, 0)
+
+Error.Name = "Error"
+Error.Parent = Frame
+Error.AnchorPoint = Vector2.new(0.5, 0.5)
+Error.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Error.BackgroundTransparency = 1.000
+Error.BorderColor3 = Color3.fromRGB(0, 0, 0)
+Error.BorderSizePixel = 0
+Error.Position = UDim2.new(0.499959648, 0, 0.7501086, 0)
+Error.Size = UDim2.new(0.990477383, 0, 0.49978295, 0)
+Error.Visible = false
+Error.Font = Enum.Font.Cartoon
+Error.Text = "Error: Could not find player \"onis_202\""
+Error.TextColor3 = Color3.fromRGB(247, 108, 123)
+Error.TextScaled = true
+Error.TextSize = 14.000
+Error.TextWrapped = true
+Error.TextXAlignment = Enum.TextXAlignment.Left
+
+Credits.Name = "Credits"
+Credits.Parent = Frame
+Credits.AnchorPoint = Vector2.new(0.5, 0.5)
+Credits.BackgroundTransparency = 1.000
+Credits.BorderSizePixel = 0
+Credits.Position = UDim2.new(0.499056607, 0, 0.250108838, 0)
+Credits.Size = UDim2.new(0.988671303, 0, 0.500217319, 0)
+Credits.Font = Enum.Font.Cartoon
+Credits.Text = "Hom0eshaldie@oniss. $"
+Credits.TextColor3 = Color3.fromRGB(247, 208, 15)
+Credits.TextScaled = true
+Credits.TextSize = 14.000
+Credits.TextWrapped = true
+Credits.TextXAlignment = Enum.TextXAlignment.Left
+
+Input.Name = "Input"
+Input.Parent = Credits
+Input.AnchorPoint = Vector2.new(0.5, 0.5)
+Input.BackgroundTransparency = 1.000
+Input.BorderSizePixel = 0
+Input.Position = UDim2.new(0.65, 0, 0.49999997, 0)
+Input.Size = UDim2.new(0.763960838, 0, 0.99999994, 0)
+Input.Font = Enum.Font.Cartoon
+Input.Text = ""
+Input.TextColor3 = Color3.fromRGB(255, 255, 255)
+Input.TextScaled = true
+Input.TextSize = 14.000
+Input.TextWrapped = true
+Input.TextXAlignment = Enum.TextXAlignment.Left
+
+Success.Name = "Success"
+Success.Parent = Frame
+Success.AnchorPoint = Vector2.new(0.5, 0.5)
+Success.BackgroundTransparency = 1.000
+Success.BorderSizePixel = 0
+Success.Position = UDim2.new(0.499959648, 0, 0.7501086, 0)
+Success.Size = UDim2.new(0.990477383, 0, 0.49978295, 0)
+Success.Font = Enum.Font.Cartoon
+Success.Text = "Success: Exploit loaded. Add \"oniss.\" on discord"
+Success.TextColor3 = Color3.fromRGB(172, 240, 148)
+Success.TextScaled = true
+Success.TextSize = 14.000
+Success.TextWrapped = true
+Success.TextXAlignment = Enum.TextXAlignment.Left
+
+Loading.Name = "Loading"
+Loading.Parent = Frame
+Loading.AnchorPoint = Vector2.new(0.5, 0.5)
+Loading.BackgroundTransparency = 1.000
+Loading.BorderSizePixel = 0
+Loading.Position = UDim2.new(0.499959648, 0, 0.7501086, 0)
+Loading.Size = UDim2.new(0.990477383, 0, 0.49978295, 0)
+Loading.Font = Enum.Font.Cartoon
+Loading.Text = ""
+Loading.TextColor3 = Color3.fromRGB(230, 190, 70)
+Loading.TextScaled = true
+Loading.TextSize = 14.000
+Loading.TextWrapped = true
+Loading.TextXAlignment = Enum.TextXAlignment.Left
