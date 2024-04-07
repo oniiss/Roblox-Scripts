@@ -121,6 +121,12 @@ local function executeCommand(cmd)
         Success.Visible = true
         Success.Text = "Success: " .. cmdName .. " executed"
         print("Another command executed with args:", table.concat(args, ", "))
+    elseif cmdName == "spectate" then
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/oniiss/Roblox-Scripts/main/Spectator%20Script"))()
+    elseif cmdName == "dex" then
+        loadstring(game:HttpGet("https://cdn.wearedevs.net/scripts/Dex%20Explorer.txt"))()
+    elseif cmdName == "spy" then
+        loadstring(game:HttpGet("https://pastebin.com/raw/66NjbMN7",true))()
     else
         Error.Visible = true
         Success.Visible = false
