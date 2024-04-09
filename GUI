@@ -77,27 +77,33 @@ Success.BorderSizePixel = 0
 Success.Position = UDim2.new(0.499959648, 0, 0.7501086, 0)
 Success.Size = UDim2.new(0.990477383, 0, 0.49978295, 0)
 Success.Font = Enum.Font.Cartoon
-Success.Text = "Success: Exploit loaded. Add \"oniss.\" on discord"
+Success.Text = "Type to get suggestion"
 Success.TextColor3 = Color3.fromRGB(172, 240, 148)
 Success.TextScaled = true
 Success.TextSize = 14.000
 Success.TextWrapped = true
 Success.TextXAlignment = Enum.TextXAlignment.Left
 
-local Loading = Instance.new("TextLabel")
-Loading.Parent = Frame
-Loading.AnchorPoint = Vector2.new(0.5, 0.5)
-Loading.BackgroundTransparency = 1.000
-Loading.BorderSizePixel = 0
-Loading.Position = UDim2.new(0.499959648, 0, 0.7501086, 0)
-Loading.Size = UDim2.new(0.990477383, 0, 0.49978295, 0)
-Loading.Font = Enum.Font.Cartoon
-Loading.Text = ""
-Loading.TextColor3 = Color3.fromRGB(230, 190, 70)
-Loading.TextScaled = true
-Loading.TextSize = 14.000
-Loading.TextWrapped = true
-Loading.TextXAlignment = Enum.TextXAlignment.Left
+local commands = {
+    "test",
+    "testarg",
+    "spectate",
+    "dex",
+    "spy"
+} -- List of available commands
+
+local currentSuggestion
+
+local function autoComplete(prefix)
+    local suggestions = {}
+    for _, cmd in ipairs(commands) do
+        if string.sub(cmd, 1, #prefix) == prefix then
+            table.insert(suggestions, cmd)
+        end
+    end
+    return suggestions
+end
+
 
 local function executeCommand(cmd)
     -- Split the command into words
@@ -110,38 +116,83 @@ local function executeCommand(cmd)
     local cmdName = table.remove(words, 1)
     local args = words
 
-    -- Check if cmd exists
-    if cmdName == "test" then
-        Error.Visible = false
-        Success.Visible = true
-        Success.Text = "Success: " .. cmdName .. " executed"
-        print("Test command executed with args:", table.concat(args, ", "))
-    elseif cmdName == "testarg" and args[1] then
-        Error.Visible = false
-        Success.Visible = true
-        Success.Text = "Success: " .. cmdName .. " executed"
-        print("Another command executed with args:", table.concat(args, ", "))
-    elseif cmdName == "spectate" then
+    
+    if cmdName == "spectate" or currentSuggestion == "spectate" then
         loadstring(game:HttpGet("https://raw.githubusercontent.com/oniiss/Roblox-Scripts/main/Spectator%20Script"))()
-    elseif cmdName == "dex" then
+    elseif cmdName == "dex" or currentSuggestion == "dex" then
         loadstring(game:HttpGet("https://cdn.wearedevs.net/scripts/Dex%20Explorer.txt"))()
-    elseif cmdName == "spy" then
+    elseif cmdName == "spy" or currentSuggestion == "spy" then
         loadstring(game:HttpGet("https://pastebin.com/raw/66NjbMN7",true))()
     else
-        Error.Visible = true
-        Success.Visible = false
-        Error.Text = "Command not recognized: " .. cmdName
-        print("Command not recognized:", cmdName)
+        -- handle unknown command
     end
 end
 
+local function updateAutoComplete(suggestions)
+    for i, suggestion in ipairs(suggestions) do
+        local suggestionLabel = AutoCompleteFrame:FindFirstChild("Suggestion" .. i)
+        if not suggestionLabel then
+            suggestionLabel = Instance.new("TextLabel")
+            suggestionLabel.Name = "Suggestion" .. i
+            suggestionLabel.Parent = AutoCompleteFrame
+            suggestionLabel.BackgroundTransparency = 1
+            suggestionLabel.Size = UDim2.new(1, 0, 0, 20)
+            suggestionLabel.Position = UDim2.new(0, 0, 0, (i - 1) * 20)
+            suggestionLabel.Font = Enum.Font.Cartoon
+            suggestionLabel.TextSize = 14
+            suggestionLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+            suggestionLabel.TextWrapped = true
+            suggestionLabel.TextXAlignment = Enum.TextXAlignment.Left
+        end
+        suggestionLabel.Text = suggestion
+        suggestionLabel.Visible = true
+    end
+    for i = #suggestions + 1, 5 do
+        local suggestionLabel = AutoCompleteFrame:FindFirstChild("Suggestion" .. i)
+        if suggestionLabel then
+            suggestionLabel.Visible = false
+        end
+    end
+end
 
+local function showSuggestion(suggestion)
+    if suggestion then
+        Success.Text = "Suggestion: " .. suggestion
+        currentSuggestion = suggestion
+    else
+        Success.Text = "Type to get suggestion"
+    end
+end
 
--- Event handler for input submission
+Input:GetPropertyChangedSignal("Text"):Connect(function()
+    local text = Input.Text
+    local keyCode = game:GetService("UserInputService"):GetKeysPressed()[1]
+    if keyCode and keyCode.KeyCode == Enum.KeyCode.Tab then
+        local suggestions = autoComplete(text)
+        if #suggestions > 0 then
+            local bestMatch = suggestions[1]
+            Input.Text = bestMatch
+            Input.CursorPosition = #bestMatch + 1
+            updateAutoComplete({})
+            showSuggestion(nil)
+        end
+    else
+        local suggestions = autoComplete(text)
+        if #suggestions > 0 then
+            local bestMatch = suggestions[1]
+            showSuggestion(bestMatch)
+        else
+            Credits.Text = "CMD:"
+            showSuggestion(nil)
+        end
+    end
+end)
+
 Input.FocusLost:Connect(function(enterPressed)
     if enterPressed then
         local cmd = Input.Text
         Input.Text = ""
         executeCommand(cmd)
+        AutoCompleteFrame.Visible = false
     end
 end)
